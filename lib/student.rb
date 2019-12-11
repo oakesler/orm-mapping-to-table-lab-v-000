@@ -21,11 +21,8 @@ class Student
     DB[:conn].execute(sql)
   end
   
-  
-  
-  
-  def self.create(name = {}, grade = {})
-    student = Student.new(name, grade)
+  def self.create(name: name, grade: grade)
+    student = Student.new(:name, :grade)
     student.save
     student
     DB[:conn].execute(sql, name, grade)
@@ -36,14 +33,15 @@ def save
     INSERT INTO students(name, grade)
     VALUES (?, ?)
     SQL
-    DB[:conn].execute(sql)
+    DB[:conn].execute(sql, self.name, self.grade)
+    @id = DB[:conn].execute("SELECT last_insert_rowid() FROM songs")[0][0]  
   end
   
 def self.drop_table
   sql = <<-SQL
-  DELETE FROM students WHERE id != nil 
+  DROP TABLE students 
   SQL
   DB[:conn].execute(sql)
 end
-  
+
 end
