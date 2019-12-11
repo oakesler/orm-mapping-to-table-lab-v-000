@@ -1,9 +1,10 @@
 class Student
   
-  attr_accessor :name, :grade, :id
+  attr_accessor :name, :grade
+  attr_reader :id
   
   def initialize(name, grade, id=nil)
-    @id = nil
+    @id = id
     @name = name
     @grade = grade 
   end
@@ -37,4 +38,12 @@ def save
     SQL
     DB[:conn].execute(sql)
   end
+  
+def self.drop_table
+  sql = <<-SQL
+  DELETE FROM students WHERE id != nil 
+  SQL
+  DB[:conn].execute(sql)
+end
+  
 end
